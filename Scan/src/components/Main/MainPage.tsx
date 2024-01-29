@@ -138,7 +138,7 @@ export default function MainPage() {
                         swipeable
                     >
                         {cardContents.map((cardContent: ImgSource) => {
-                            return <Card src={cardContent.src} text={cardContent.text}/>
+                            return <Card src={cardContent.src} text={cardContent.text} key={cardContent.src}/>
                         })}
                     </Carousel>
                 </div>

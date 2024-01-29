@@ -30,7 +30,7 @@ export default function LoginPage() {
     const [isPasswordValid, setIsPasswordValid] = useState(false);
     const [error, setError] = useState({
         state: false,
-        message: false
+        message: false,
     });
 
     const navigate = useNavigate();
@@ -41,34 +41,37 @@ export default function LoginPage() {
         credentials: IAuthCredentials,
     ): Promise<void> {
         try {
-            await api.post(
+            const response = await api.post(
                 `/api/v1/account/login`,
                 credentials
-            )
-                .then((response) => {
-                    if (response.status === 200) {
-                        localStorage.setItem('token', response.data.accessToken);
-                        localStorage.setItem('expire', response.data.expire!);
-                        dispatch(authorize({
-                            accessToken: `Bearer ${response.data.accessToken!}`,
-                            expire: response.data.expire!
-                        }))
-                    } else return;
-                })
-        } catch (e: any) {
-            console.log(e.message);
+            );
+    
+            if (response.status === 200) {
+                localStorage.setItem('token', response.data.accessToken);
+                localStorage.setItem('expire', response.data.expire!);
+                dispatch(authorize({
+                    accessToken: `Bearer ${response.data.accessToken!}`,
+                    expire: response.data.expire!
+                }));
+            } else {
+                throw new Error('Invalid credentials'); 
+            }
+        } catch (error) {
+            throw error; 
         }
     }
-
-    async function getInfo() {
+    
+    async function getInfo(e: React.FormEvent) {
+        e.preventDefault();
+    
         try {
-            await verifyRequisites({login: form.login!, password: form.password!})
-
+            await verifyRequisites({ login: form.login!, password: form.password! });
+    
             const token = await localStorage.getItem('token') as string;
-
+    
             await validateLogin();
             await validatePassword();
-
+    
             if (token) {
                 navigate('/dashboard');
                 api.get("/api/v1/account/info")
@@ -77,19 +80,18 @@ export default function LoginPage() {
                             usedCompanyCount: data.data.eventFiltersInfo.usedCompanyCount,
                             companyLimit: data.data.eventFiltersInfo.companyLimit
                         }
-                    })))
+                    })));
             } else {
-                setError({state: true, message: false})
+                setError({ state: true, message: false });
             }
-
+    
             if (error.state) {
-                setError({state: true, message: true});
+                setError({ state: true, message: true });
             }
-        } catch (e: any) {
-            console.log(e.message)
+        } catch (error: any) {
+            setError({ state: true, message: true }); 
         }
     }
-
     function handleFormInput(e: React.FormEvent) {
         const target = e.target as HTMLInputElement;
 
@@ -164,7 +166,7 @@ export default function LoginPage() {
                         </div>
                     </form>
                 </div>
-                <button type='submit' className={st.loginButton} onClick={getInfo}>
+                <button type='submit' className={st.loginButton} onClick={(e) => getInfo}>
                     Войти
                 </button>
                 <span><a href='/login' style={

@@ -1,23 +1,26 @@
 import axios from "axios"
-import localStorage from "redux-persist/es/storage"
+
 import { IAuthCredentials, TToken } from "../utils/types/types"
 
-export const API_URL = process.env.BASE_URL;
+// Ensure that localStorage is available in the environment
+const localStorage = typeof window !== 'undefined' ? window.localStorage : null;
 
-export async function verifyRequisites(
-    credentials: IAuthCredentials,
-): Promise<void> {
+export const API_URL = process.env.BASE_URL || 'https://gateway.scan-interfax.ru/api/v1/account/login';
 
+export async function verifyRequisites(credentials: IAuthCredentials): Promise<void> {
     try {
-        await axios.post(
-            `https://gateway.scan-interfax.ru/api/v1/account/login`,
-            credentials
-        )
-            .then((response: axios.AxiosResponse<TToken>) => {
-                localStorage.setItem('token', response.data.accessToken);
-                localStorage.setItem('expire', response.data.expire!);
-            })
-    } catch (e) {
-       alert('ошибка')
+        const response = await axios.post(API_URL, credentials);
+        const responseData: TToken = response.data;
+
+       
+        if (localStorage) {
+            localStorage.setItem('token', responseData.accessToken);
+            localStorage.setItem('expire', responseData.expire || '');
+        } else {
+            console.error('localStorage is not available');
+        }
+    } catch (error) {
+        console.error('An error occurred:', error);
+       
     }
 }
