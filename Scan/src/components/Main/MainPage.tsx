@@ -15,6 +15,7 @@ import Card from "../Card/Card"
 import TariffCard from "../TariffCard/TariffCard"
 import s from './Main.module.scss'
 
+
 // @ts-ignore
 export function LeftArrow({onClick, ...rest}) {
     return (
@@ -31,6 +32,7 @@ export function RightArrow({onClick, ...rest}) {
 
 export default function MainPage() {
 
+    
     const authorized = useAppSelector((state: RootState) => state.authorization);
     const checkboxOptions = useAppSelector((state: RootState) => state.checkboxOptions)
     const checkboxStatus = useAppSelector((state: RootState) => state.checkboxStatus)

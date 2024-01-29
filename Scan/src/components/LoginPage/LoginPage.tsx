@@ -14,6 +14,7 @@ import { IAuthCredentials } from "../../utils/types/types"
 import st from '../Main/Main.module.scss'
 import s from "./LoginPage.module.scss"
 
+
 type TInputForm = {
     login?: string,
     password?: string
@@ -61,9 +62,8 @@ export default function LoginPage() {
         }
     }
     
-    async function getInfo(e: React.FormEvent) {
-        e.preventDefault();
-    
+    async function getInfo() {
+        
         try {
             await verifyRequisites({ login: form.login!, password: form.password! });
     
@@ -166,7 +166,7 @@ export default function LoginPage() {
                         </div>
                     </form>
                 </div>
-                <button type='submit' className={st.loginButton} onClick={(e) => getInfo}>
+                <button type='submit' className={st.loginButton} onClick={ getInfo}>
                     Войти
                 </button>
                 <span><a href='/login' style={

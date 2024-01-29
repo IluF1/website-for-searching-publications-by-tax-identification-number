@@ -2,15 +2,16 @@ import axios from "axios"
 
 import { IAuthCredentials, TToken } from "../utils/types/types"
 
-// Ensure that localStorage is available in the environment
+
 const localStorage = typeof window !== 'undefined' ? window.localStorage : null;
 
-export const API_URL = process.env.BASE_URL || 'https://gateway.scan-interfax.ru/api/v1/account/login';
+export const API_URL = process.env.REACT_APP_BASE_URL;
 
 export async function verifyRequisites(credentials: IAuthCredentials): Promise<void> {
     try {
-        const response = await axios.post(API_URL, credentials);
+        const response = await axios.post(JSON.stringify(API_URL), credentials);
         const responseData: TToken = response.data;
+
 
        
         if (localStorage) {
