@@ -1,5 +1,5 @@
 
-import api from './http';
+import api from './http'
 
 import { IAuthCredentials, TToken } from "../utils/types/types"
 
@@ -12,9 +12,6 @@ export async function verifyRequisites(credentials: IAuthCredentials): Promise<v
     try {
         const response = await api.post(JSON.stringify(API_URL), credentials);
         const responseData: TToken = response.data;
-
-
-       
         if (localStorage) {
             localStorage.setItem('token', responseData.accessToken);
             localStorage.setItem('expire', responseData.expire || '');

@@ -5,8 +5,6 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Available Scripts
 
 In the project directory, you can run:
-USER_LOGIN='sf_student8'
-USER_PASSWORD='5QB0KM/'
 
 ### `npm start`
 

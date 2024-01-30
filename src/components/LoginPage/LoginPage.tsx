@@ -43,7 +43,7 @@ export default function LoginPage() {
     ): Promise<void> {
         try {
             const response = await api.post(
-                `/api/v1/account/login`,
+                `https://gateway.scan-interfax.ru/api/v1/account/login`,
                 credentials
             );
     
@@ -74,7 +74,7 @@ export default function LoginPage() {
     
             if (token) {
                 navigate('/dashboard');
-                api.get("/api/v1/account/info")
+                api.get("https://gateway.scan-interfax.ru/api/v1/account/info")
                     .then((data) => dispatch(getLimitInfo({
                         eventFiltersInfo: {
                             usedCompanyCount: data.data.eventFiltersInfo.usedCompanyCount,
